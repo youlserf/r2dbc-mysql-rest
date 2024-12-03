@@ -1,5 +1,6 @@
 package com.kallpacode.reactivemysql.controller;
 
+import com.kallpacode.reactivemysql.dto.ActorFilmDto;
 import com.kallpacode.reactivemysql.entity.Actor;
 import com.kallpacode.reactivemysql.entity.Film;
 import com.kallpacode.reactivemysql.service.ActorFilmService;
@@ -7,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.yaml.snakeyaml.util.Tuple;
 import reactor.core.publisher.Flux;
 
 @RestController
@@ -19,7 +19,7 @@ public class ActorFilmController {
 
     // Combine Actor and Film (join-like logic)
     @GetMapping("/combine-actor-film")
-    public Flux<Tuple<Actor, Film>> combineActorFilm() {
+    public Flux<ActorFilmDto<Actor, Film>> combineActorFilm() {
         return actorFilmService.combineActorFilm();
     }
 
@@ -49,13 +49,13 @@ public class ActorFilmController {
 
     // MergeMap: handles concurrent operations and merges results
     @GetMapping("/mergemap")
-    public Flux<Tuple<Actor, Film>> mergeMapExample() {
+    public Flux<ActorFilmDto<Actor, Film>> mergeMapExample() {
         return actorFilmService.mergeMapExample();
     }
 
     // CombineLatest: combines multiple streams, emitting the latest value from each
     @GetMapping("/combine-latest")
-    public Flux<Tuple<Actor, Film>> combineLatestExample() {
+    public Flux<ActorFilmDto<Actor, Film>> combineLatestExample() {
         return actorFilmService.combineLatestExample();
     }
 

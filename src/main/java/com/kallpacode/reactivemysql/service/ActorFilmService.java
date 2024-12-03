@@ -2,11 +2,11 @@ package com.kallpacode.reactivemysql.service;
 
 import com.kallpacode.reactivemysql.dao.ReactiveActorDao;
 import com.kallpacode.reactivemysql.dao.ReactiveFilmDao;
+import com.kallpacode.reactivemysql.dto.ActorFilmDto;
 import com.kallpacode.reactivemysql.entity.Actor;
 import com.kallpacode.reactivemysql.entity.Film;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.yaml.snakeyaml.util.Tuple;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -17,13 +17,13 @@ public class ActorFilmService {
     @Autowired
     private ReactiveActorDao actorDao;
     @Autowired
-    ReactiveFilmDao filmDao;
+    private ReactiveFilmDao filmDao;
 
-    public Flux<Tuple<Actor, Film>> combineActorFilm(){
+    public Flux<ActorFilmDto<Actor, Film>> combineActorFilm(){
         return actorDao.findAll()
                 .flatMap(actor -> filmDao.findAll()
                         .filter(film -> film.getFilmId() % actor.getActorId() == 0)
-                        .map(film -> new Tuple<>(actor, film)));
+                        .map(film -> new ActorFilmDto<Actor, Film>(actor, film)));
     }
 
     public Flux<Actor> observableVsObserver(){
@@ -49,15 +49,15 @@ public class ActorFilmService {
                 .window(3);
     }
 
-    public Flux<Tuple<Actor, Film>> mergeMapExample() {
+    public Flux<ActorFilmDto<Actor, Film>> mergeMapExample() {
         return actorDao.findAll()
                 .flatMap(actor -> filmDao.findAll()
                         .take(1) // Take only one film per actor for simplicity
-                        .map(film -> new Tuple<>(actor, film))); // Merge actors with films
+                        .map(film -> new ActorFilmDto<Actor, Film>(actor, film))); // Merge actors with films
     }
 
-    public Flux<Tuple<Actor, Film>> combineLatestExample() {
-        return Flux.combineLatest(actorDao.findAll(), filmDao.findAll(), Tuple::new);
+    public Flux<ActorFilmDto<Actor, Film>> combineLatestExample() {
+        return Flux.combineLatest(actorDao.findAll(), filmDao.findAll(), ActorFilmDto::new);
     }
 
     public Flux<Actor> retryExample() {
