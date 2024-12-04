@@ -8,6 +8,13 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 
 @SpringBootApplication
 @EnableWebFlux
+@OpenAPIDefinition(
+		info = @Info(
+				title = "Reactive MySQL API",
+				version = "1.0",
+				description = "API documentation for the Reactive MySQL application"
+		)
+)
 public class ReactiveMysqlApplication {
 
 	public static void main(String[] args) {
