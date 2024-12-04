@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/reactive/actorfilm")
 public class ActorFilmController {
@@ -43,7 +45,7 @@ public class ActorFilmController {
 
     // Windowing: splits the stream into windows of a fixed size
     @GetMapping("/windowing")
-    public Flux<Flux<Actor>> windowingExample() {
+    public Flux<List<Actor>> windowingExample() {
         return actorFilmService.windowingExample();
     }
 

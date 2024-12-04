@@ -11,6 +11,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
 
 @Service
 public class ActorFilmService {
@@ -44,9 +45,10 @@ public class ActorFilmService {
                 .map(Flux::fromIterable); // Wrap each batch as a Flux
     }
 
-    public Flux<Flux<Actor>> windowingExample(){
+    public Flux<List<Actor>> windowingExample() {
         return actorDao.findAll()
-                .window(3);
+                .window(3) // Create windows of size 3
+                .flatMap(window -> window.collectList()); // Convert each window Flux<Actor> to List<Actor>
     }
 
     public Flux<ActorFilmDto<Actor, Film>> mergeMapExample() {
